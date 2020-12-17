@@ -9,8 +9,11 @@ import Error from "./pages/Error";
 import Books from "./pages/Books";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import PushCheckout from "./pages/PushCheckout";
+import PushAccount from "./pages/PushAccount";
 import BookDetails from "./pages/BookDetails";
 import Admin from './pages/Admin';
+import RInfo from './pages/Account';
 
 // Components
 import Header from "./components/Header"
@@ -20,7 +23,7 @@ import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
 
-const App = () => {
+ const App = () => {
   return (
     <Router>
       <Header />
@@ -43,6 +46,15 @@ const App = () => {
         </Route>
         <Route path="/admin">
           <Admin />
+        </Route>
+        <Route path="/account">
+          <RInfo />
+        </Route>
+        <Route path="/pushcheckout">
+          <PushCheckout />
+        </Route>
+        <Route path="/pushaccount">
+          <PushAccount />
         </Route>
         <Route path="*">
           <Error />

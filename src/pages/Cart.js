@@ -9,7 +9,10 @@ const Cart = () => {
   const { cart, total, increaseAmount, decreaseAmount } = useContext(CartContext);
 
   if (!cart.length) {
-    return <h3>Empty Cart</h3>
+    return (
+    <h1 className="cart-empty2">
+    <h3 className="cart-empty1">Empty Cart. Add some items to your cart first.</h3>
+    </h1>)
   }
   return (
     <section className="cart">
@@ -34,11 +37,11 @@ const Cart = () => {
           </article>
         ))}
       </div>
-      <div>
-        <h3>Total: $ {total}</h3>
+      <div className="total">
+        <h3 className="total1">&nbsp; Total: $ {total} &nbsp;</h3>
       </div>
       <div>
-        <button className="btn" onClick={() => history.push("/checkout")}>Checkout</button>
+        <button className="btn3" onClick={() => history.push("/checkout")}>Checkout</button>
       </div>
     </section>
   );

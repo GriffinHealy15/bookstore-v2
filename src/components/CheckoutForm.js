@@ -34,7 +34,7 @@ const CheckoutForm = () => {
   useEffect(() => {
     if (orderDetails.token) {
       checkout(orderDetails);
-      //clearCart();
+      clearCart();
       //history.push("/");
     }
   }, [orderDetails]);
@@ -51,6 +51,10 @@ const CheckoutForm = () => {
   // Handle form submission.
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    var overlayOrder = document.getElementById('overlayOrder');
+    overlayOrder.style.display = "inline";
+
     const card = elements.getElement(CardElement);
     const result = await stripe.createToken(card);
     if (result.error) {
@@ -66,6 +70,9 @@ const CheckoutForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1 id="overlayOrder" className="overlay"> 
+      <div className="bgUV">Processing Order...</div>
+      </h1>
       <div className="checkout-form">
         <label htmlFor="checkout-address">Shipping Address</label>
         <input
@@ -81,7 +88,7 @@ const CheckoutForm = () => {
           {error}
         </div>
       </div>
-      <button type="submit" className="btn">
+      <button type="submit" className="btn3">
         Submit Payment
       </button>
     </form>

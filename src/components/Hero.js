@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
+        <div>
         <section className="hero">
-            <h2>Wisdom Books</h2>
-            <h3>A room without books is like a <br />body without a soul</h3>
-            <Link className="btn" to="/books">View All Books</Link>
+            <h2>Shop Oasis</h2>
+            <h3 className="heroBG">Find the items <br />you are searching for</h3>
+            <Link className="btn3" to="/books">View All Products</Link>
         </section>
+        <section>
+        </section>
+        </div>
     )
 }
 

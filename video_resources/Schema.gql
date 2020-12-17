@@ -1,4 +1,4 @@
-type Book
+type BookType
   @model(subscriptions: null)
   @auth(
     rules: [
@@ -17,10 +17,32 @@ type Book
   author: String
   featured: Boolean
   price: Float
-  orders: [BookOrder] @connection(keyName: "byBook", fields: ["id"])
+  orders: [BookOrderType] @connection(keyName: "byBook", fields: ["id"])
+  comments: [BookCommentType] @connection(keyName: "byBook", fields: ["id"])
 }
 
-type BookOrder
+type BookCommentType
+  @model(subscriptions: null)
+  @key(name: "byBook", fields: ["book_id"])
+  @auth(
+    rules: [
+      # allow admins to create, update and delete books
+      { allow: groups, groups: ["Admin"] }
+      # allow all authenticated users to view comments
+      { allow: private, operations: [read] }
+      # allow all authenticated users to create comments
+      { allow: private, operations: [create] }
+      # allow all guest users (not authenticated) to view comments
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  textComment: String
+  book_id: ID!
+  book: BookType @connection(fields: ["book_id"])
+}
+
+type BookOrderType
   @model(queries: null, subscriptions: null)
   @key(name: "byBook", fields: ["book_id", "order_id"])
   @key(name: "byOrder", fields: ["order_id", "book_id"])
@@ -34,11 +56,11 @@ type BookOrder
   id: ID!
   book_id: ID!
   order_id: ID!
-  book: Book @connection(fields: ["book_id"])
-  order: Order @connection(fields: ["order_id"])
+  book: BookType @connection(fields: ["book_id"])
+  order: OrderType @connection(fields: ["order_id"])
 }
 
-type Order
+type OrderType
   @model(subscriptions: null)
   @auth(
     rules: [
@@ -53,7 +75,7 @@ type Order
   user: String!
   date: String
   total: Float
-  books: [BookOrder] @connection(keyName: "byOrder", fields: ["id"])
+  books: [BookOrderType] @connection(keyName: "byOrder", fields: ["id"])
 }
 
 enum OrderStatus {
@@ -79,6 +101,6 @@ input ProcessOrderInput {
 
 type Mutation {
   processOrder(input: ProcessOrderInput!): OrderStatus
-    @function(name: "processPayment-${env}")
-    @function(name: "createOrder-${env}")
+    @function(name: "processOrderPayment-${env}")
+    @function(name: "createOrderOnline-${env}")
 }
